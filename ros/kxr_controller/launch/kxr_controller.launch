@@ -1,7 +1,7 @@
 <launch>
 
-  <arg name="urdf_path" value="$(find kxr_models)/urdf/kxrl2l2a6h2m.urdf" />
-  <arg name="servo_config_path" value="$(find kxr_models)/config/kxrl2l2a6h2m_servo_config.yaml" />
+  <arg name="urdf_path" default="$(find kxr_models)/urdf/kxrl2l2a6h2m.urdf" />
+  <arg name="servo_config_path" default="$(find kxr_models)/config/kxrl2l2a6h2m_servo_config.yaml" />
   <arg name="namespace" default="" />
 
   <group if="$(eval len(arg('namespace')) > 0)" ns="$(arg namespace)" >
