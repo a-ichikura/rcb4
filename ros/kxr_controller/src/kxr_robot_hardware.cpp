@@ -35,6 +35,7 @@ namespace kxr_controller {
     }
 
     joint_position_command_.resize(model.joints_.size());
+    joint_velocity_command_.resize(model.joints_.size());
     joint_state_position_.resize(model.joints_.size());
     joint_state_velocity_.resize(model.joints_.size());
     joint_state_effort_.resize(model.joints_.size());
@@ -53,14 +54,19 @@ namespace kxr_controller {
       joint_state_interface.registerHandle(state_handle);
       hardware_interface::JointHandle pos_handle(joint_state_interface.getHandle(jointname), &joint_position_command_[i]);
       joint_position_interface.registerHandle(pos_handle);
+      hardware_interface::JointHandle vel_handle(joint_state_interface.getHandle(jointname), &joint_velocity_command_[i]);
+      joint_velocity_interface.registerHandle(vel_handle);
+
       ++i;
     }
 
     registerInterface(&joint_state_interface);
     registerInterface(&joint_position_interface);
+    registerInterface(&joint_velocity_interface);
 
     joint_state_sub_ = nh_.subscribe<sensor_msgs::JointState>(clean_namespace + "/current_joint_states", 1, &KXRRobotHW::jointStateCallback, this);
     joint_command_pub_ = nh_.advertise<sensor_msgs::JointState>(clean_namespace + "/command_joint_state", 1);
+    joint_velocity_command_pub_ = nh_.advertise<sensor_msgs::JointState>(clean_namespace + "/velocity_command_joint_state", 1);
 
     ROS_INFO("Waiting for action server to start.");
     servo_on_off_action_server_ = std::make_shared<ServoOnOffActionServer>(robot_hw_nh, clean_namespace + "/kxr_fullbody_controller/servo_on_off",
@@ -92,14 +98,20 @@ namespace kxr_controller {
   {
     boost::mutex::scoped_lock lock(mutex_);
     sensor_msgs::JointState joint_state_msg;
+    sensor_msgs::JointState joint_velocity_state_msg;
     joint_state_msg.header.stamp = getTime();
+    joint_velocity_state_msg.header.stamp = getTime();
     for (const auto& pair : jointname_to_id_) {
       const std::string& joint_name = pair.first;
       unsigned int joint_id = pair.second;
       joint_state_msg.position.push_back(joint_position_command_[joint_id]);
       joint_state_msg.name.push_back(joint_name);
+
+      joint_velocity_state_msg.position.push_back(joint_velocity_command_[joint_id]);
+      joint_velocity_state_msg.name.push_back(joint_name);
     }
     joint_command_pub_.publish(joint_state_msg);
+    joint_velocity_command_pub_.publish(joint_velocity_state_msg);
   }
 
   void KXRRobotHW::jointStateCallback(const sensor_msgs::JointState::ConstPtr& msg)

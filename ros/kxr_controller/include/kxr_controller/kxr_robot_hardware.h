@@ -34,14 +34,17 @@ namespace kxr_controller {
 
     hardware_interface::JointStateInterface joint_state_interface;
     hardware_interface::PositionJointInterface joint_position_interface;
+    hardware_interface::VelocityJointInterface joint_velocity_interface;
 
     bool joint_state_received_;
     std::map<std::string, unsigned int> jointname_to_id_;
     ros::Subscriber joint_state_sub_;
     ros::Publisher joint_command_pub_;
+    ros::Publisher joint_velocity_command_pub_;
     sensor_msgs::JointState current_joint_state_;
     sensor_msgs::JointState command_joint_state_;
     std::vector<double> joint_position_command_;
+    std::vector<double> joint_velocity_command_;
     std::vector<double> joint_state_position_;
     std::vector<double> joint_state_velocity_;
     std::vector<double> joint_state_effort_;

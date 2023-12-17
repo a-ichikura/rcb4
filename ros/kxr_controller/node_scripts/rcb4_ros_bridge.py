@@ -40,7 +40,14 @@ def load_yaml(file_path, Loader=yaml.SafeLoader):
         raise OSError('{} not exists'.format(str(file_path)))
     with open(osp.expanduser(file_path), 'r') as f:
         data = yaml.load(f, Loader=Loader)
-    return data
+    data = data['joint_name_to_servo_id']
+    joint_name_to_id = {}
+    for name in data:
+        if isinstance(data[name], int):
+            joint_name_to_id[name] = data[name]
+        else:
+            joint_name_to_id[name] = data[name]['id']
+    return joint_name_to_id, data
 
 
 def run_robot_state_publisher(namespace=None):
@@ -85,8 +92,7 @@ class RCB4ROSBridge(object):
                 r.load_urdf_file(f)
 
         servo_config_path = rospy.get_param('~servo_config_path')
-        self.joint_name_to_id = load_yaml(servo_config_path)[
-            'joint_name_to_servo_id']
+        self.joint_name_to_id, servo_infos = load_yaml(servo_config_path)
 
         joint_list = [j for j in r.joint_list
                       if j.__class__.__name__ != 'FixedJoint']
@@ -100,7 +106,6 @@ class RCB4ROSBridge(object):
         set_robot_description(
             urdf_path,
             param_name=clean_namespace + '/robot_description')
-        set_fullbody_controller(self.joint_names)
         set_joint_state_controler()
         self.current_joint_states_pub = rospy.Publisher(
             clean_namespace + '/current_joint_states',
@@ -115,8 +120,34 @@ class RCB4ROSBridge(object):
         arm.search_wheel_sids()
         arm.all_jointbase_sensors()
         arm.send_stretch(40)
-
         self.id_to_index = self.arm.servo_id_to_index()
+        self._prev_velocity_command = None
+
+        print(arm.joint_to_actuator_matrix)
+        print(arm._actuator_to_joint_matrix)
+        for _, info in servo_infos.items():
+            if isinstance(info, int):
+                continue
+            servo_id = info['id']
+            direction = info['direction']
+            idx = self.id_to_index[servo_id]
+            arm._joint_to_actuator_matrix[idx, idx] = \
+                direction * arm._joint_to_actuator_matrix[idx, idx]
+        print(arm.joint_to_actuator_matrix)
+
+        self.fullbody_jointnames = []
+        for jn in self.joint_names:
+            if jn not in self.joint_name_to_id:
+                continue
+            servo_id = self.joint_name_to_id[jn]
+            if servo_id in arm.wheel_servo_sorted_ids:
+                continue
+            self.fullbody_jointnames.append(jn)
+        set_fullbody_controller(self.fullbody_jointnames)
+        # set_fullbody_controller(self.joint_names)
+        print('Fullbody jointnames')
+        print(self.fullbody_jointnames)
+
         self.servo_id_to_worm_id = self.arm.servo_id_to_worm_id
 
         self.joint_servo_on = {jn: False for jn in self.joint_names}
@@ -139,6 +170,11 @@ class RCB4ROSBridge(object):
             JointState, queue_size=1,
             callback=self.command_joint_state_callback)
 
+        self.velocity_command_joint_state_sub = rospy.Subscriber(
+            clean_namespace + '/velocity_command_joint_state',
+            JointState, queue_size=1,
+            callback=self.velocity_command_joint_state_callback)
+
         self.servo_on_off_server = actionlib.SimpleActionServer(
             clean_namespace
             + '/kxr_fullbody_controller/servo_on_off_real_interface',
@@ -153,6 +189,51 @@ class RCB4ROSBridge(object):
             + ['joint_state_controller', 'kxr_fullbody_controller'])
         self.proc_robot_state_publisher = run_robot_state_publisher(
             clean_namespace)
+
+    def velocity_command_joint_state_callback(self, msg):
+        servo_ids = []
+        av_length = len(self.arm.servo_sorted_ids)
+        svs = np.zeros(av_length)
+        valid_indices = []
+        for name, angle in zip(msg.name, msg.position):
+            if name not in self.joint_name_to_id:
+                continue
+            if name in self.joint_servo_on \
+               and self.joint_servo_on[name] is False:
+                continue
+            idx = self.joint_name_to_id[name]
+
+            # should ignore duplicated index.
+            if idx not in self.id_to_index:
+                continue
+            # skip wheel joint
+            if idx not in self.arm.wheel_servo_sorted_ids:
+                continue
+            if self.id_to_index[idx] in valid_indices:
+                continue
+
+            angle = np.rad2deg(angle)
+            svs[self.id_to_index[idx]] = angle
+            valid_indices.append(self.id_to_index[idx])
+            servo_ids.append(idx)
+        tmp_av = np.ones(av_length + 1)
+        if len(valid_indices) == 0:
+            return
+        try:
+            tmp_av[:len(svs)] = np.array(svs)
+        except Exception:
+            return
+        svs = np.matmul(self.arm.joint_to_actuator_matrix, tmp_av)[
+            np.array(valid_indices)]
+        indices = np.argsort(servo_ids)
+        svs = svs[indices]
+        servo_ids = np.array(servo_ids)[indices]
+        if self._prev_velocity_command is not None and np.allclose(
+                self._prev_velocity_command, svs):
+            return
+        self._prev_velocity_command = svs
+        with self.lock:
+            self.arm.servo_angle_vector(servo_ids, svs, velocity=0)
 
     def command_joint_state_callback(self, msg):
         servo_ids = []
@@ -171,6 +252,9 @@ class RCB4ROSBridge(object):
 
             # should ignore duplicated index.
             if idx not in self.id_to_index:
+                continue
+            # skip wheel joint
+            if idx in self.arm.wheel_servo_sorted_ids:
                 continue
             if self.id_to_index[idx] in valid_indices:
                 continue
