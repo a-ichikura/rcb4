@@ -10,6 +10,6 @@
 
   <include file="$(find kxr_controller)/launch/diff_drive_controller.launch" />
 
-  <include file="$(find kxr_controller)/launch/joy.launch" />
+  <!-- <include file="$(find kxr_controller)/launch/joy.launch" /> -->
 
 </launch>
