@@ -124,9 +124,12 @@
     </visual>
     <collision>
       <origin xyz="0.0435 0.048 -0.0665" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kuromitsu/LLEG_LINK0_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kuromitsu/LLEG_LINK0_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.095024" />
@@ -143,9 +146,12 @@
     </visual>
     <collision>
       <origin xyz="-0.0435 0.048 -0.0665" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kuromitsu/LLEG_LINK1_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kuromitsu/LLEG_LINK1_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.095024" />
@@ -219,9 +225,12 @@
     </visual>
     <collision>
       <origin xyz="0.0435 -0.048 -0.0665" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kuromitsu/RLEG_LINK0_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kuromitsu/RLEG_LINK0_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.095024" />
@@ -238,9 +247,12 @@
     </visual>
     <collision>
       <origin xyz="-0.0435 -0.048 -0.0665" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kuromitsu/RLEG_LINK1_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kuromitsu/RLEG_LINK1_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.095024" />
@@ -252,7 +264,7 @@
     <parent link="bodyset94493408362304"/>
     <child  link="HEAD_LINK0"/>
     <origin xyz="-0.00725 0 0.1065" rpy="0 -0 0 "/>
-    <axis   xyz="0 0 1"/>
+    <axis   xyz="0 0 -1"/>
     <limit lower="-2.96706" upper="2.96706" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
@@ -260,7 +272,7 @@
     <parent link="HEAD_LINK0"/>
     <child  link="HEAD_LINK1"/>
     <origin xyz="0 0 0.036" rpy="0 -0 0 "/>
-    <axis   xyz="0 1 0"/>
+    <axis   xyz="0 -1 0"/>
     <limit lower="-2.0944" upper="2.0944" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
@@ -268,7 +280,7 @@
     <parent link="bodyset94493408362304"/>
     <child  link="LARM_LINK0"/>
     <origin xyz="0.00725 0.0465 0.0915" rpy="0 -0 0 "/>
-    <axis   xyz="0 1 0"/>
+    <axis   xyz="0 -1 0"/>
     <limit lower="-3.14159" upper="3.14159" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
@@ -276,7 +288,7 @@
     <parent link="LARM_LINK0"/>
     <child  link="LARM_LINK1"/>
     <origin xyz="0 0.029 0" rpy="0 -0 0 "/>
-    <axis   xyz="1 0 0"/>
+    <axis   xyz="-1 0 0"/>
     <limit lower="-0.523599" upper="3.22886" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
@@ -284,7 +296,7 @@
     <parent link="LARM_LINK1"/>
     <child  link="LARM_LINK2"/>
     <origin xyz="0 0 -0.053" rpy="0 -0 0 "/>
-    <axis   xyz="0 1 0"/>
+    <axis   xyz="0 -1 0"/>
     <limit lower="-2.96706" upper="2.96706" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>

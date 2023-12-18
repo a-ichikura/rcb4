@@ -1,0 +1,14 @@
+joint_name_to_servo_id: {
+  HEAD_JOINT0: 32,
+  HEAD_JOINT1: 34,
+  LARM_JOINT0: 3,
+  LARM_JOINT1: 5,
+  LARM_JOINT2: 7,
+  RLEG_JOINT0: 1,
+  RLEG_JOINT1: 21,
+  RARM_JOINT0: 2,
+  RARM_JOINT1: 4,
+  RARM_JOINT2: 6,
+  LLEG_JOINT0: {"id": 0, "direction": -1}, 
+  LLEG_JOINT1: {"id": 20, "direction": -1}
+}
