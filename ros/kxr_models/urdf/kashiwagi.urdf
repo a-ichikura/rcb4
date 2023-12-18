@@ -105,9 +105,12 @@
     </visual>
     <collision>
       <origin xyz="0.063 0.048 -0.056" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kashiwagi/LLEG_LINK0_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kashiwagi/LLEG_LINK0_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.04244" />
@@ -124,9 +127,12 @@
     </visual>
     <collision>
       <origin xyz="-0.063 0.048 -0.056" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kashiwagi/LLEG_LINK1_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kashiwagi/LLEG_LINK1_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>	  
     </collision>
     <inertial>
       <mass value="0.04244" />
@@ -181,9 +187,12 @@
     </visual>
     <collision>
       <origin xyz="0.063 -0.048 -0.056" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kashiwagi/RLEG_LINK0_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kashiwagi/RLEG_LINK0_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>	  
     </collision>
     <inertial>
       <mass value="0.04244" />
@@ -200,9 +209,12 @@
     </visual>
     <collision>
       <origin xyz="-0.063 -0.048 -0.056" rpy="0 -0 0"/>
-      <geometry>
-        <mesh filename="package://kxr_models/meshes/kashiwagi/RLEG_LINK1_mesh.dae" scale="1 1 1" />
-      </geometry>
+      <!-- <geometry> -->
+      <!--   <mesh filename="package://kxr_models/meshes/kashiwagi/RLEG_LINK1_mesh.dae" scale="1 1 1" /> -->
+      <!-- </geometry> -->
+     <geometry>
+       <cylinder radius="0.05" length="0.01"/>
+     </geometry>
     </collision>
     <inertial>
       <mass value="0.04244" />
