@@ -5,12 +5,16 @@ import rospy
 from skrobot.interfaces.ros.base import ROSRobotInterfaceBase
 from skrobot.model import RobotModel
 from skrobot.viewers import TrimeshSceneViewer
+from skrobot.utils.urdf import resolve_filepath
 import numpy as np
 
 import actionlib
 import actionlib_msgs.msg
 from kxr_controller.msg import ServoOnOffAction
 from kxr_controller.msg import ServoOnOffGoal
+
+
+
 
 
 class ArmROSRobotInterface(ROSRobotInterfaceBase):
@@ -68,10 +72,27 @@ class ArmROSRobotInterface(ROSRobotInterfaceBase):
         return [self.fullbody_controller]
 
 
+def save_angle_vector_mode():
+    ri.servo_off()
+    angles = []
+    while True:
+        ret = input("save current angle?")
+        ret = ret.lower()
+        if ret == "q" or ret == "quite" or ret == "no":
+            break
+        if ret == "yes" or ret == "y":
+            angles.append(ri.angle_vector())
+    ri.servo_on()
+    for av in angles:
+        ri.angle_vector(av, 0.1)
+        ri.wait_interpolation()
+
+
 rospy.init_node('interface_controller')
 r = RobotModel()
-urdf_path = '/home/iory/ros/kxr_ws/src/rcb4/ros/kxr_models/urdf/kxrl2l2a6h2m.urdf'
-urdf_path = '/home/iory/ros/kxr/src/rcb4/ros/kxr_models/urdf/kxrl2l2a6h2m.urdf'
+# urdf_path = '/home/iory/ros/kxr_ws/src/rcb4/ros/kxr_models/urdf/kxrl2l2a6h2m.urdf'
+# urdf_path = '/home/iory/ros/kxr/src/rcb4/ros/kxr_models/urdf/kxrl2l2a6h2m.urdf'
+urdf_path = resolve_filepath("", "package://kxr_models/urdf/kuromitsu.urdf")
 with open(urdf_path) as f:
     r.load_urdf_file(f)
 v = TrimeshSceneViewer()
@@ -80,4 +101,4 @@ v.show()
 for j in r.joint_list:
     if j.max_joint_velocity == 0.0:
         j.max_joint_velocity = 10.0
-ri = ArmROSRobotInterface(r, controller_timeout=None)
+ri = ArmROSRobotInterface(r, controller_timeout=1000)
