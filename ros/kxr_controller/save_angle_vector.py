@@ -69,7 +69,7 @@ def save_angle_vector_mode(ri, json_filepath=None):
     thread.start()
     angles = []
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(1)
     while not rospy.is_shutdown():
         if current_state == CommandTypes.save.value:
             angles.append(ri.angle_vector())
@@ -83,7 +83,7 @@ def save_angle_vector_mode(ri, json_filepath=None):
         ri.angle_vector(angles[0], 3)
         ri.wait_interpolation()    
     for av in angles[1:]:
-        ri.angle_vector(av, 0.1)
+        ri.angle_vector(av, 1.0)
         ri.wait_interpolation()
     thread.join()
 
