@@ -53,6 +53,7 @@ def save_angle_vector_mode(ri, json_filepath=None):
     global current_state
     motion_dict = {}
     if json_filepath is not None:
+        json_filepath = os.path.expanduser(json_filepath)
         if os.path.exists(json_filepath):
             try:
                 with open(json_filepath) as f:
