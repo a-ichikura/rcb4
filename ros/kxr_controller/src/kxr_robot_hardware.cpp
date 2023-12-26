@@ -34,6 +34,13 @@ namespace kxr_controller {
       return false;
     }
 
+    double control_loop_rate;
+    if (!root_nh.getParam("control_loop_rate", control_loop_rate) ||
+        control_loop_rate <= 0.0) {
+      control_loop_rate = 20.0;
+    }
+    control_loop_period_ = ros::Duration(1.0 / control_loop_rate);
+
     joint_position_command_.resize(model.joints_.size());
     joint_velocity_command_.resize(model.joints_.size());
     joint_state_position_.resize(model.joints_.size());
