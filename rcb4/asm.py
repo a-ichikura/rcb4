@@ -29,7 +29,7 @@ def rcb4_servo_ids_to_5bytes(seq: List[int]) -> List[int]:
 
 
 def rcb4_velocity(v):
-    return min(255, round(v))
+    return min(255, int(round(v)))
 
 
 def rcb4_servo_positions(
@@ -51,7 +51,7 @@ def rcb4_servo_positions(
     if not isinstance(ids, list):
         ids = list(ids)
 
-    fv = [round(v) for v in fvector]
+    fv = [int(round(v)) for v in fvector]
     buf = []
     for d in fv:
         buf.append(d & 0xff)
