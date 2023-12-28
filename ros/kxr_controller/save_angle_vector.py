@@ -70,7 +70,7 @@ def save_angle_vector_mode(ri, json_filepath=None):
     thread.start()
     angles = []
 
-    rate = rospy.Rate(1)
+    rate = rospy.Rate(10)
     while not rospy.is_shutdown():
         if current_state == CommandTypes.save.value:
             angles.append(ri.angle_vector())
@@ -80,14 +80,22 @@ def save_angle_vector_mode(ri, json_filepath=None):
     ri.servo_on()
 
     print("playing motions")
+    ###
+    print(len(angles))
+    cnt = 0
+    ####
     if len(angles) > 0:
         ri.angle_vector(angles[0], 3)
-        ri.wait_interpolation()    
-    for av in angles[1:]:
-        ri.angle_vector(av, 1.0)
         ri.wait_interpolation()
+    for av in angles[1:]:
+        ri.angle_vector(av, 0.1)
+        # ri.wait_interpolation()
+        rate.sleep()
+        cnt += 1
+        print(cnt)
     thread.join()
 
+    print("thread.join end")
     if len(angles) > 0:
         while True:
             name = input("please input motion name: ")

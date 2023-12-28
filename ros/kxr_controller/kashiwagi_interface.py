@@ -83,9 +83,13 @@ def save_angle_vector_mode():
         if ret == "yes" or ret == "y":
             angles.append(ri.angle_vector())
     ri.servo_on()
+    # import ipdb
+    # ipdb.set_trace()
+    print(angles)
     for av in angles:
         ri.angle_vector(av, 0.1)
         ri.wait_interpolation()
+        print(1)
 
 
 rospy.init_node('interface_controller')
