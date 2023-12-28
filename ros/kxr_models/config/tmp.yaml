@@ -1,0 +1,10 @@
+joint_name_to_servo_id: {
+  JOINT0: 0,
+  JOINT1: 2,
+  JOINT2: 4,
+  JOINT3: 6,
+  JOINT4: 8,  
+  JOINT5: 10,
+  JOINT6: 12,
+  JOINT7: 14
+}
