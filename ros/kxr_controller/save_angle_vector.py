@@ -84,8 +84,8 @@ def save_angle_vector_mode(ri, json_filepath=None):
         ri.angle_vector(angles[0], 3)
         ri.wait_interpolation()    
     for av in angles[1:]:
-        ri.angle_vector(av, 1.0)
-        ri.wait_interpolation()
+        ri.angle_vector(av, 0.3)
+        #ri.wait_interpolation()
     thread.join()
 
     if len(angles) > 0:
