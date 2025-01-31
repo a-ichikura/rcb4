@@ -265,7 +265,7 @@
     <child  link="HEAD_LINK0"/>
     <origin xyz="-0.00725 0 0.1065" rpy="0 -0 0 "/>
     <axis   xyz="0 0 -1"/>
-    <limit lower="-2.96706" upper="2.96706" effort="0.656248" velocity="7.47998" />
+    <limit lower="-20.96706" upper="20.96706" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="HEAD_JOINT1" type="revolute">
@@ -273,7 +273,7 @@
     <child  link="HEAD_LINK1"/>
     <origin xyz="0 0 0.036" rpy="0 -0 0 "/>
     <axis   xyz="0 -1 0"/>
-    <limit lower="-2.0944" upper="2.0944" effort="0.656248" velocity="7.47998" />
+    <limit lower="-20.0944" upper="20.0944" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="LARM_JOINT0" type="revolute">
@@ -281,7 +281,7 @@
     <child  link="LARM_LINK0"/>
     <origin xyz="0.00725 0.0465 0.0915" rpy="0 -0 0 "/>
     <axis   xyz="0 -1 0"/>
-    <limit lower="-3.14159" upper="3.14159" effort="0.656248" velocity="7.47998" />
+    <limit lower="-30.14159" upper="30.14159" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="LARM_JOINT1" type="revolute">
@@ -289,7 +289,7 @@
     <child  link="LARM_LINK1"/>
     <origin xyz="0 0.029 0" rpy="0 -0 0 "/>
     <axis   xyz="-1 0 0"/>
-    <limit lower="-0.523599" upper="3.22886" effort="0.656248" velocity="7.47998" />
+    <limit lower="-30.523599" upper="30.22886" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="LARM_JOINT2" type="revolute">
@@ -297,7 +297,7 @@
     <child  link="LARM_LINK2"/>
     <origin xyz="0 0 -0.053" rpy="0 -0 0 "/>
     <axis   xyz="0 -1 0"/>
-    <limit lower="-2.96706" upper="2.96706" effort="0.656248" velocity="7.47998" />
+    <limit lower="-20.96706" upper="20.96706" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="LLEG_JOINT0" type="revolute">
@@ -321,7 +321,7 @@
     <child  link="RARM_LINK0"/>
     <origin xyz="0.00725 -0.0465 0.0915" rpy="0 -0 0 "/>
     <axis   xyz="0 1 0"/>
-    <limit lower="-3.14159" upper="3.14159" effort="0.656248" velocity="7.47998" />
+    <limit lower="-30.14159" upper="30.14159" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="RARM_JOINT1" type="revolute">
@@ -329,7 +329,7 @@
     <child  link="RARM_LINK1"/>
     <origin xyz="0 -0.029 0" rpy="0 -0 0 "/>
     <axis   xyz="1 0 0"/>
-    <limit lower="-3.22886" upper="0.523599" effort="0.656248" velocity="7.47998" />
+    <limit lower="-30.22886" upper="30.523599" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="RARM_JOINT2" type="revolute">
@@ -337,7 +337,7 @@
     <child  link="RARM_LINK2"/>
     <origin xyz="0 0 -0.053" rpy="0 -0 0 "/>
     <axis   xyz="0 1 0"/>
-    <limit lower="-2.96706" upper="2.96706" effort="0.656248" velocity="7.47998" />
+    <limit lower="-20.96706" upper="20.96706" effort="0.656248" velocity="7.47998" />
     <dynamics damping="0.2" friction="0" />
   </joint>
   <joint name="RLEG_JOINT0" type="revolute">

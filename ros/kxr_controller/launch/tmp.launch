@@ -1,0 +1,52 @@
+<launch>
+
+  <arg name="urdf_path" default="$(find kxr_models)/urdf/tmp.urdf" />
+  <arg name="servo_config_path" default="$(find kxr_models)/config/tmp.yaml" />
+  <arg name="namespace" default="" />
+
+  <group if="$(eval len(arg('namespace')) > 0)" ns="$(arg namespace)" >
+    <node name="rcb4_ros_bridge"
+          pkg="kxr_controller" type="rcb4_ros_bridge.py"
+          clear_params="true"
+          output="screen"
+          required="true" >
+      <rosparam subst_value="true" >
+        urdf_path: $(arg urdf_path)
+        servo_config_path: $(arg servo_config_path)
+      </rosparam>
+    </node>
+
+    <node name="kxr_controller"
+          pkg="kxr_controller"
+          type="kxr_controller"
+          clear_params="true"
+          respawn="true" output="screen">
+      <rosparam>
+      </rosparam>
+    </node>
+
+  </group>
+
+  <group unless="$(eval len(arg('namespace')) > 0)">
+    <node name="rcb4_ros_bridge"
+          pkg="kxr_controller" type="rcb4_ros_bridge.py"
+          clear_params="true"
+          output="screen"
+          required="true" >
+      <rosparam subst_value="true" >
+        urdf_path: $(arg urdf_path)
+        servo_config_path: $(arg servo_config_path)
+      </rosparam>
+    </node>
+
+    <node name="kxr_controller"
+          pkg="kxr_controller"
+          type="kxr_controller"
+          clear_params="true"
+          respawn="true" output="screen">
+      <rosparam>
+      </rosparam>
+    </node>
+  </group>
+
+</launch>

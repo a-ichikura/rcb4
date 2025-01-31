@@ -94,12 +94,9 @@ def save_angle_vector_mode():
 
 rospy.init_node('interface_controller')
 r = RobotModel()
-urdf_path = resolve_filepath("", "package://kxr_models/urdf/kashiwagi.urdf")
+urdf_path = resolve_filepath("", "package://kxr_models/urdf/tmp.urdf")
 with open(urdf_path) as f:
     r.load_urdf_file(f)
-v = TrimeshSceneViewer()
-v.add(r)
-v.show()
 for j in r.joint_list:
     if j.max_joint_velocity == 0.0:
         j.max_joint_velocity = 10.0
